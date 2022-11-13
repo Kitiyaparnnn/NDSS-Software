@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ndss_mobile">
    <application
-        android:label="ndss_mobile"
+        android:label="M-NDSS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
