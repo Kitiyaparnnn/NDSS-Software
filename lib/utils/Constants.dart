@@ -4,10 +4,7 @@ class GridConfig {
 }
 
 class PreferenceKey {
-  static const List<String> evaluate = [
-    'select evaluate',
-    'Nitrogen Dioxide'
-  ];
+  static const List<String> evaluate = ['Nitrogen Dioxide'];
   static const String standard = 'Standard';
   static const String sample = 'Sample';
   // static const String phosphate = 'Phosphate';
@@ -29,7 +26,7 @@ class PreferenceKey {
   static const String evaluateTitle = 'สาร: ';
   static const String dateTitle = 'วันที่ส่งภาพเพื่อวิเคราะห์: ';
 
-  static const String inputForm = 'select evaluate';
+  static const String inputForm = 'Nitrogen Dioxide';
   static const String noti = 'กรุณากรอกข้อมูลให้ครบ';
   static const String analyzTap = 'วิเคราะห์แบบคลิ๊กเลือก';
   static const String analyzAll = 'วิเคราะห์แบบรวม';

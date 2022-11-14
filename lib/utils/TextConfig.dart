@@ -10,5 +10,5 @@ class StyleText {
   static TextStyle buttonText =
       const TextStyle(color: Colors.white, fontSize: 15);
   static TextStyle resultText = const TextStyle(
-      color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500);
+      color: Colors.black, fontSize: 10, fontWeight: FontWeight.w500);
 }

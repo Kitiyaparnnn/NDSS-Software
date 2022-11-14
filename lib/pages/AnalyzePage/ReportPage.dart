@@ -71,8 +71,8 @@ class _ReportPageState extends State<ReportPage> {
     await extractColors();
     await conStandard();
     await cropImage();
-    minimum = widget.report.calSample().reduce(min);
-    maximum = widget.report.calSample().reduce(max);
+    minimum = widget.report.calStandard().reduce(min);
+    maximum = widget.report.calStandard().reduce(max);
     waiting = false;
     setState(() {});
   }
@@ -84,14 +84,14 @@ class _ReportPageState extends State<ReportPage> {
         con.add(i);
       }
     }
-    return con = con + con.toList();
+    return con;
   }
 
   conStandard() async {
     // print(con);
-    con = widget.report.con[widget.report.evaluate]!;
 
     List<double> standard = widget.report.calStandard();
+    // logger.d({'standard : ${standard.length},con : ${calCon().length}'});
     equation = calRsquare(standard, calCon());
     logger.d(equation);
   }
@@ -132,7 +132,7 @@ class _ReportPageState extends State<ReportPage> {
 
   Future<Uint8List> _readFileByte(File? filePath) async {
     File audioFile = filePath!;
-    Uint8List bytes = (await rootBundle.load('lib/assets/images/water.jpg'))
+    Uint8List bytes = (await rootBundle.load('lib/assets/images/NO2.jpg'))
         .buffer
         .asUint8List();
     await audioFile.readAsBytes().then((value) {
@@ -183,14 +183,14 @@ class _ReportPageState extends State<ReportPage> {
                   text: 'Standard Linear Regression',
                   textStyle: TextStyle(fontSize: 12),
                 ),
-                primaryXAxis: 
-                     NumericAxis(minimum: 0, interval: 0.1, maximum: 0.7),
+                primaryXAxis:
+                    NumericAxis(minimum: 0, interval: 0.1, maximum: 0.7),
                 legend: Legend(
                     isVisible: true,
                     position: LegendPosition.bottom,
                     overflowMode: LegendItemOverflowMode.wrap),
                 primaryYAxis: NumericAxis(
-                    minimum: minimum, maximum: maximum, interval: 5),
+                    minimum: minimum, maximum: maximum, interval: 10),
                 series: <CartesianSeries>[
                   ScatterSeries<ChartData, double>(
                       legendItemText: PreferenceKey.standard,
@@ -320,7 +320,7 @@ class _ReportPageState extends State<ReportPage> {
   List<List<String>> smp = [];
 
   Widget _showResult() {
-    con = con + con;
+    con = calCon();
 
     int i = 0;
     int j = 0;
@@ -334,37 +334,29 @@ class _ReportPageState extends State<ReportPage> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 5,
+              crossAxisCount: 6,
             ),
             itemCount: file.length,
             itemBuilder: (BuildContext ctx, index) {
               String title;
               String concentrate;
               String rgbCode;
-
-              if (index < Plate.pnpStandard.length) {
+              if (Plate.pnpStandard.contains(index + 1)) {
                 title = 'Std';
-                concentrate = con[i].toStringAsFixed(2);
+                concentrate = con[i * 5].toStringAsFixed(2);
                 rgbCode = widget.report.standard[i * 5].toStringAsFixed(0);
                 i++;
               } else {
-                var number = index % 10;
+                var number = index % 6;
                 if (number == 0) n++;
                 title = plate.label[n] + plate.no[number].toString();
                 concentrate = (result[j] * 2).toStringAsFixed(2);
                 rgbCode = widget.report.sample[j].toStringAsFixed(0);
-                smp.add([
-                  "$title",
-                  "SMP",
-                  "${widget.report.red[50 + j]}",
-                  "${widget.report.green[50 + j]}",
-                  "${widget.report.blue[50 + j]}",
-                  "-",
-                  "$concentrate"
-                ]);
+                smp.add(["$title", "SMP", "$concentrate"]);
                 j++;
               }
               return Container(
+                height: MediaQuery.of(context).size.height,
                 child: Column(
                   children: [
                     Text(title + '=' + '$concentrate',
@@ -372,7 +364,7 @@ class _ReportPageState extends State<ReportPage> {
                     Image.file(
                       file[index],
                       fit: BoxFit.contain,
-                      height: 40,
+                      height: 32,
                       width: 50,
                     ),
                     Text(
@@ -387,60 +379,51 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   _showExportButton() {
-    return waiting? SizedBox():Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                textStyle: StyleText.normalText,
-                backgroundColor: Colors.green,
+    return waiting
+        ? SizedBox()
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      textStyle: StyleText.buttonText,
+                      backgroundColor: ColorCode.appBarColor,
+                    ),
+                    onPressed: () {
+                      generateCsv();
+                    },
+                    icon: Icon(
+                      Icons.file_upload,
+                      color: Colors.white,
+                    ),
+                    label: Text('CSV', style: StyleText.buttonText)),
               ),
-              onPressed: () {
-                generateCsv();
-              },
-              icon: Icon(
-                Icons.file_upload,
-              ),
-              label: Text('CSV')),
-        ),
-      ],
-    );
+            ],
+          );
   }
 
   Future generateCsv() async {
     List<List<String>> std = [];
     int j = 0;
     while (j < widget.report.standard.length) {
-      List label = ['B', 'C'];
+      List label = ['A', 'B', 'C'];
       int x = j ~/ 5;
       for (int i = 0; i < 5; i++) {
         std.add([
-          "${x < 5 ? label[0] : label[1]}${plate.no[x % 5]}",
+          "${x < 4 ? (x < 2 ? label[0] : label[1]) : label[2]}${Plate.pnpStandard[x]}",
           "STD",
-          "${widget.report.red[j]}",
-          "${widget.report.green[j]}",
-          "${widget.report.blue[j]}",
-          "-",
-          "${con[x].toStringAsFixed(2)}"
+          "${con[x * 5].toStringAsFixed(2)}"
         ]);
         j++;
       }
     }
-    // print("row of std: ${std.length}");
-    // print("row of smp: ${smp.length}");
+    print("row of std: ${std.length}");
+    print("row of smp: ${smp.length}");
 
     List<List<String>> data = [
-          [
-            "well_index",
-            "STD/SMP",
-            "color_R",
-            "color_G",
-            "color_B",
-            "HSV",
-            "saturation"
-          ]
+          ["well_index", "STD/SMP", "nitrogen dioxide (ug)"]
         ] +
         std.toList() +
         smp.toList();

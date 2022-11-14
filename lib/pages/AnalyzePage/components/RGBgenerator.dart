@@ -39,8 +39,8 @@ Map<String, List<Color>> extractPixelsColors(Uint8List? bytes) {
     int midX = xChunk ~/ 2;
     int midY = yChunk ~/ 2;
     int no = 1;
-    midX = midX + 1;
-    midY = midY + 1;
+    midX = midX + 5;
+    midY = midY + 5;
     // xChunk = xChunk + 1;
     // yChunk = yChunk + 1;
     for (int j = 1; j < GridConfig.noOfPixelsPerAxisY + 1; j++) {

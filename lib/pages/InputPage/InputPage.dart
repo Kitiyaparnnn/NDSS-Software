@@ -7,6 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../myApp.dart';
 import '../../utils/Constants.dart';
 import '../../utils/PlateConfig.dart';
 import '../../utils/TextConfig.dart';
@@ -25,10 +26,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController reportName = TextEditingController();
-  String dropdownValue = PreferenceKey.inputForm;
+  final TextEditingController reportEvaluate =
+      TextEditingController(text: PreferenceKey.inputForm);
   File? imageFile;
   File? _image;
-  ReportInfo report = ReportInfo('', '', [], [], []);
+  ReportInfo report = ReportInfo('', PreferenceKey.inputForm, [], [], []);
 
   @override
   void initState() {
@@ -149,6 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
         isIcon = Icon(
           Icons.check_circle_outline_outlined,
           color: Colors.green,
+          size: 40,
         );
       }
       //sample
@@ -156,6 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
         isIcon = Icon(
           Icons.check_circle_outline_outlined,
           color: Colors.red,
+          size: 40,
         );
       }
     }
@@ -175,7 +179,8 @@ class _MyHomePageState extends State<MyHomePage> {
         minimumSize: const Size.fromHeight(50),
       ),
       onPressed: () {
-        imageFile == null || report.evaluate == PreferenceKey.inputForm
+        // logger.d(report.evaluate);
+        imageFile == null
             ? BotToast.showText(text: PreferenceKey.noti)
             : Navigator.push(
                 context,
@@ -196,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
         minimumSize: const Size.fromHeight(50),
       ),
       onPressed: () {
-        imageFile == null || report.evaluate == PreferenceKey.inputForm
+        imageFile == null
             ? BotToast.showText(text: PreferenceKey.noti)
             : Navigator.push(
                 context,
@@ -235,33 +240,14 @@ class _MyHomePageState extends State<MyHomePage> {
         SizedBox(
           height: 5,
         ),
-        InputDecorator(
-          decoration: InputDecorations.inputDec(hintText: ''),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              hint: Text('สาร'),
-              value: dropdownValue,
-              icon: const Icon(Icons.arrow_drop_down),
-              elevation: 4,
-              style: StyleText.normalText,
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue = newValue!;
-                  report.name = reportName.text.toString();
-                  report.evaluate = dropdownValue;
-                });
-              },
-              items: PreferenceKey.evaluate
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value, style: StyleText.normalText),
-                );
-              }).toList(),
-            ),
-          ),
-        ),
+        TextFormField(
+          controller: reportEvaluate,
+          onChanged: (context) => setState(() {
+            report.evaluate = context;
+          }),
+          decoration: InputDecorations.inputDec(hintText: 'example'),
+          style: StyleText.normalText,
+        )
       ],
     );
   }
@@ -321,7 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Container(
                                 constraints: BoxConstraints(
                                   maxWidth: MediaQuery.of(context).size.width,
-                                  maxHeight: 252,
+                                  maxHeight: 190,
                                 ),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.rectangle,
@@ -336,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             fit: BoxFit.fill)
                                         : Center(
                                             child: Text(
-                                              "ไม่มีรูปภาพ",
+                                              "",
                                               style: StyleText.normalText,
                                               textAlign: TextAlign.center,
                                             ),
@@ -350,7 +336,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       children: List.generate(
                                           18,
                                           (index) => _checkBox(
-                                              dropdownValue, index + 1)),
+                                              reportEvaluate.text, index + 1)),
                                     ),
                                   ],
                                 ),

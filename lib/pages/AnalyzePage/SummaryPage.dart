@@ -76,7 +76,7 @@ class _SummaryPageState extends State<SummaryPage> {
 
   Future<Uint8List> _readFileByte(File? filePath) async {
     File audioFile = filePath!;
-    Uint8List bytes = (await rootBundle.load('lib/assets/images/water.jpg'))
+    Uint8List bytes = (await rootBundle.load('lib/assets/images/NO2.jpg'))
         .buffer
         .asUint8List();
     await audioFile.readAsBytes().then((value) {
@@ -96,12 +96,12 @@ class _SummaryPageState extends State<SummaryPage> {
         con.add(i);
       }
     }
-    return con = con + con.toList();
+    return con;
   }
 
   conStandard() async {
     // print(con);
-    con = widget.report.con[widget.report.evaluate]!;
+    // con = widget.report.con[widget.report.evaluate]!;
 
     List<double> standard = widget.report.calStandard();
     equation = calRsquare(standard, calCon());
@@ -111,11 +111,10 @@ class _SummaryPageState extends State<SummaryPage> {
   double calConcentrate(PolyFit equation, Color colorCode) {
     double sample = 0;
     try {
-      
       if (widget.report.evaluate == PreferenceKey.nitrogenDi) {
         sample = colorCode.green.toDouble();
       }
-      
+
       result = equation.predict(sample);
       // result = 1;
     } catch (e) {
@@ -128,6 +127,7 @@ class _SummaryPageState extends State<SummaryPage> {
   @override
   Widget build(BuildContext context) {
     var report = widget.report;
+    // logger.d(report.evaluate);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -196,16 +196,25 @@ class _SummaryPageState extends State<SummaryPage> {
                                     });
                                     calConcentrate(equation, color);
                                     return SizedBox(
-                                      height: h.toDouble(),
+                                      // height: h.toDouble(),
                                       width: MediaQuery.of(context).size.width,
-                                      child: Image.file(
-                                        flutter.file,
-                                        fit: BoxFit.fill,
-                                      ),
+                                      child: Stack(children: [
+                                        Image.file(
+                                          flutter.file,
+                                          fit: BoxFit.fill,
+                                        ),
+                                        Positioned(
+                                            left: localPosition.dx - 10,
+                                            top: localPosition.dy - 22,
+                                            // height: h.toDouble(),
+                                            child:
+                                                Icon(Icons.push_pin_rounded)),
+                                      ]),
                                     );
                                   }),
                             ),
                           )))),
+
               Expanded(
                 flex: 2,
                 child: Column(
