@@ -28,15 +28,17 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController reportName = TextEditingController();
   final TextEditingController reportEvaluate =
       TextEditingController(text: PreferenceKey.inputForm);
+  final TextEditingController reportTime = TextEditingController();
   File? imageFile;
   File? _image;
-  ReportInfo report = ReportInfo('', PreferenceKey.inputForm, [], [], []);
+  ReportInfo report = ReportInfo('', PreferenceKey.inputForm, 0, [], [], []);
 
   @override
   void initState() {
     FlutterNativeSplash.remove();
     super.initState();
     reportName.clear();
+    reportTime.clear();
     // report.evaluate = dropdownValue;
   }
 
@@ -247,7 +249,22 @@ class _MyHomePageState extends State<MyHomePage> {
           }),
           decoration: InputDecorations.inputDec(hintText: 'example'),
           style: StyleText.normalText,
-        )
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(PreferenceKey.timeTitle, style: StyleText.headerText),
+        SizedBox(
+          height: 5,
+        ),
+        TextFormField(
+          controller: reportTime,
+          onChanged: (context) => setState(() {
+            report.time = int.parse(context);
+          }),
+          decoration: InputDecorations.inputDec(hintText: '3600'),
+          style: StyleText.normalText,
+        ),
       ],
     );
   }
@@ -296,9 +313,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     onPressed: _showImageDialog,
                                     child: Text(
-                                      imageFile == null
-                                          ? "อัพโหลดรูปภาพ"
-                                          : "เปลี่ยนรูปภาพ",
+                                      imageFile == null ? "Upload" : "Change",
                                       style: StyleText.buttonText,
                                     ),
                                   )

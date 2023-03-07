@@ -20,15 +20,18 @@ class PreferenceKey {
   static const String h_HSV = 'HSV';
   static const String h_saturation = 'Saturation';
 
+   static const String report =
+      'Report';
   static const String reportTitle =
-      'รายงานผลการวิเคราะห์ไนโตรเจนไดออกไซด์ในอากาศจากภาพถ่าย';
-  static const String nameTitle = 'ชื่อการทดลอง: ';
-  static const String evaluateTitle = 'สาร: ';
-  static const String dateTitle = 'วันที่ส่งภาพเพื่อวิเคราะห์: ';
+      'Nitrogen dioxide Measurement';
+  static const String nameTitle = 'File name: ';
+  static const String evaluateTitle = 'Analyte: ';
+  static const String timeTitle = 'Duration of sampling (s): ';
+  static const String dateTitle = 'Date/Time: ';
 
   static const String inputForm = 'Nitrogen Dioxide';
-  static const String noti = 'กรุณากรอกข้อมูลให้ครบ';
-  static const String analyzTap = 'วิเคราะห์แบบคลิ๊กเลือก';
-  static const String analyzAll = 'วิเคราะห์แบบรวม';
-  static const String imageTitle = 'รูปภาพที่วิเคราะห์: ';
+  static const String noti = 'Please fill the informations';
+  static const String analyzTap = 'Point pick';
+  static const String analyzAll = 'Overall result';
+  static const String imageTitle = 'Photograph: ';
 }

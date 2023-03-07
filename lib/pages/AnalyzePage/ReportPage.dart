@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:ui';
@@ -21,6 +22,7 @@ import '../../utils/Constants.dart';
 import '../../utils/PlateConfig.dart';
 import '../../utils/TextConfig.dart';
 import 'components/Capturegenerator.dart';
+import 'components/ConvertUgToUgM3.dart';
 import 'components/Graphgenerator.dart';
 import 'components/PDFprintgenerate.dart';
 import 'components/RGBgenerator.dart';
@@ -61,7 +63,8 @@ class _ReportPageState extends State<ReportPage> {
     delay();
     logger.d({
       'report name: ${widget.report.name}',
-      'report evaluate: ${widget.report.evaluate}'
+      'report evaluate: ${widget.report.evaluate}',
+      'report time: ${widget.report.time}'
     });
     super.initState();
   }
@@ -326,6 +329,8 @@ class _ReportPageState extends State<ReportPage> {
     int j = 0;
     int n = -1;
 
+    result = ugToug3(result, widget.report);
+    // logger.i(result);
     return file.length == 0
         ? SizedBox(
             height: 10,
@@ -350,7 +355,7 @@ class _ReportPageState extends State<ReportPage> {
                 var number = index % 6;
                 if (number == 0) n++;
                 title = plate.label[n] + plate.no[number].toString();
-                concentrate = (result[j] * 2).toStringAsFixed(2);
+                concentrate = (result[j]).toStringAsFixed(2);
                 rgbCode = widget.report.sample[j].toStringAsFixed(0);
                 smp.add(["$title", "SMP", "$concentrate"]);
                 j++;
@@ -423,7 +428,7 @@ class _ReportPageState extends State<ReportPage> {
     print("row of smp: ${smp.length}");
 
     List<List<String>> data = [
-          ["well_index", "STD/SMP", "nitrogen dioxide (ug)"]
+          ["well_index", "STD/SMP", "nitrogen dioxide\n     (ug/m3)"]
         ] +
         std.toList() +
         smp.toList();
@@ -444,7 +449,6 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     var report = widget.report;
-
     return Scaffold(
         key: UniqueKey(),
         appBar: AppBar(
@@ -459,7 +463,7 @@ class _ReportPageState extends State<ReportPage> {
               ),
             )
           ],
-          title: Text('รายงานผลวิเคราะห์', style: StyleText.appBar),
+          title: Text(PreferenceKey.report, style: StyleText.appBar),
         ),
         body: SingleChildScrollView(
           child: RepaintBoundary(

@@ -9,11 +9,12 @@ import '../utils/PlateConfig.dart';
 class ReportInfo {
   String name;
   String evaluate;
+  int time;
 
   List<int> red;
   List<int> green;
   List<int> blue;
-  ReportInfo(this.name, this.evaluate, this.red, this.green, this.blue);
+  ReportInfo(this.name, this.evaluate, this.time, this.red, this.green, this.blue);
 
   List<double> standard = [];
   List<double> sample = [];

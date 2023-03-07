@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:image_pixels/image_pixels.dart';
+import 'package:ndss_mobile/pages/AnalyzePage/components/ConvertUgToUgM3.dart';
 import 'package:scidart/numdart.dart';
 
 import '../../models/ReportInfo.dart';
@@ -108,6 +109,17 @@ class _SummaryPageState extends State<SummaryPage> {
     logger.d(equation);
   }
 
+  double ugToug3(double x, ReportInfo report) {
+    const L = 7;
+    const D = 0.154;
+    const A = 0.785;
+
+    double r = (x * 2 * L) / (D * A * report.time) * pow(10, 6);
+
+    logger.d("convert finish!");
+    return r;
+  }
+
   double calConcentrate(PolyFit equation, Color colorCode) {
     double sample = 0;
     try {
@@ -121,12 +133,13 @@ class _SummaryPageState extends State<SummaryPage> {
       logger.e('Fail: cal concentrate');
       result = 0;
     }
-    return result;
+    return ugToug3(result, widget.report);
   }
 
   @override
   Widget build(BuildContext context) {
     var report = widget.report;
+    result = ugToug3(result, report);
     // logger.d(report.evaluate);
     return Scaffold(
       appBar: AppBar(
@@ -142,7 +155,7 @@ class _SummaryPageState extends State<SummaryPage> {
             ),
           )
         ],
-        title: Text('รายงานผลวิเคราะห์', style: StyleText.appBar),
+        title: Text(PreferenceKey.report, style: StyleText.appBar),
       ),
       body: SizedBox.expand(
         child: RepaintBoundary(
@@ -249,7 +262,7 @@ class _SummaryPageState extends State<SummaryPage> {
                               width: 10,
                             ),
                             Text(
-                                "Concentration of Samples: ${(result * 2).toStringAsFixed(2)} ug",
+                                "Concentration of Samples: ${(result * 2).toStringAsFixed(2)} ug/m3",
                                 style: StyleText.headerText)
                           ]),
                     )
