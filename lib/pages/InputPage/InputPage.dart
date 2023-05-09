@@ -28,10 +28,10 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController reportName = TextEditingController();
   final TextEditingController reportEvaluate =
       TextEditingController(text: PreferenceKey.inputForm);
-  final TextEditingController reportTime = TextEditingController();
+  final TextEditingController reportTime = TextEditingController(text: '36000');
   File? imageFile;
   File? _image;
-  ReportInfo report = ReportInfo('', PreferenceKey.inputForm, 0, [], [], []);
+  ReportInfo report = ReportInfo('', PreferenceKey.inputForm, 3600, [], [], []);
 
   @override
   void initState() {
@@ -357,10 +357,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                             ]),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _analyzTap(),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
+                        // _analyzTap(),
                         SizedBox(
                           height: 10,
                         ),

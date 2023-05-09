@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:ndss_mobile/utils/TextConfig.dart';
 
 class LoadCsvDataScreen extends StatelessWidget {
   final String path;
@@ -14,7 +15,7 @@ class LoadCsvDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("$title .csv"),
+        title: Text("$title .csv", style: StyleText.appBar),
       ),
       body: FutureBuilder(
         future: loadingCsvData(path),
@@ -31,7 +32,7 @@ class LoadCsvDataScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
@@ -42,6 +43,12 @@ class LoadCsvDataScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     data[2].toString(),
+                                  ),
+                                  Text(
+                                    data[3].toString(),
+                                  ),
+                                  Text(
+                                    data[4].toString(),
                                   ),
                                 ],
                               ),

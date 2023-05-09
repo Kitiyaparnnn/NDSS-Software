@@ -26,7 +26,7 @@ class PreferenceKey {
       'Nitrogen dioxide Measurement';
   static const String nameTitle = 'File name: ';
   static const String evaluateTitle = 'Analyte: ';
-  static const String timeTitle = 'Duration of sampling (s): ';
+  static const String timeTitle = 'Duration of sampling (seconds): ';
   static const String dateTitle = 'Date/Time: ';
 
   static const String inputForm = 'Nitrogen Dioxide';

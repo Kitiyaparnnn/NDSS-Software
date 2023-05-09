@@ -321,6 +321,7 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   List<List<String>> smp = [];
+  List<double> ug_sample = [];
 
   Widget _showResult() {
     con = calCon();
@@ -329,6 +330,7 @@ class _ReportPageState extends State<ReportPage> {
     int j = 0;
     int n = -1;
 
+    ug_sample = result;
     result = ugToug3(result, widget.report);
     // logger.i(result);
     return file.length == 0
@@ -346,6 +348,7 @@ class _ReportPageState extends State<ReportPage> {
               String title;
               String concentrate;
               String rgbCode;
+              String ug3;
               if (Plate.pnpStandard.contains(index + 1)) {
                 title = 'Std';
                 concentrate = con[i * 5].toStringAsFixed(2);
@@ -355,9 +358,10 @@ class _ReportPageState extends State<ReportPage> {
                 var number = index % 6;
                 if (number == 0) n++;
                 title = plate.label[n] + plate.no[number].toString();
-                concentrate = (result[j]).toStringAsFixed(2);
+                concentrate = (ug_sample[j]).toStringAsFixed(2);
+                ug3 = (result[j]).toStringAsFixed(2);
                 rgbCode = widget.report.sample[j].toStringAsFixed(0);
-                smp.add(["$title", "SMP", "$concentrate"]);
+                smp.add(["$title", "SMP", "$rgbCode", "$concentrate", "$ug3"]);
                 j++;
               }
               return Container(
@@ -411,15 +415,19 @@ class _ReportPageState extends State<ReportPage> {
 
   Future generateCsv() async {
     List<List<String>> std = [];
+    List<double> ug_std = ugToug3(con, widget.report);
     int j = 0;
     while (j < widget.report.standard.length) {
+
       List label = ['A', 'B', 'C'];
       int x = j ~/ 5;
       for (int i = 0; i < 5; i++) {
         std.add([
           "${x < 4 ? (x < 2 ? label[0] : label[1]) : label[2]}${Plate.pnpStandard[x]}",
           "STD",
-          "${con[x * 5].toStringAsFixed(2)}"
+          "${widget.report.standard[i * 5].toStringAsFixed(0)}",
+          "${con[x * 5].toStringAsFixed(2)}",
+          "${ug_std[x * 5].toStringAsFixed(2)}"
         ]);
         j++;
       }
@@ -428,7 +436,7 @@ class _ReportPageState extends State<ReportPage> {
     print("row of smp: ${smp.length}");
 
     List<List<String>> data = [
-          ["well_index", "STD/SMP", "nitrogen dioxide\n     (ug/m3)"]
+          ["well_index", "STD/SMP", "  G  ", "  nitrogen\n  dioxide\n  (ug)", "nitrogen \ndioxide \n(ug/m3)"]
         ] +
         std.toList() +
         smp.toList();
