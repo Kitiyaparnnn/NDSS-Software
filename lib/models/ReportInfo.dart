@@ -11,7 +11,8 @@ class ReportInfo {
   List<int> red;
   List<int> green;
   List<int> blue;
-  ReportInfo(this.name, this.evaluate, this.time, this.red, this.green, this.blue);
+  ReportInfo(
+      this.name, this.evaluate, this.time, this.red, this.green, this.blue);
 
   List<double> standard = [];
   List<double> sample = [];
@@ -28,7 +29,7 @@ class ReportInfo {
     // print(this.evaluate);
     try {
       if (this.evaluate == PreferenceKey.nitrogenDi) {
-        for (int i = 1; i < 31; i++) {
+        for (int i = 1; i < 7; i++) {
           standard.add(green[i - 1].toDouble());
         }
       }
@@ -44,7 +45,7 @@ class ReportInfo {
     this.sample = [];
     try {
       if (this.evaluate == PreferenceKey.nitrogenDi) {
-        for (int i = 31; i <= 42; i++) {
+        for (int i = 7; i <= 18; i++) {
           sample.add(green[i - 1].toDouble());
         }
       }

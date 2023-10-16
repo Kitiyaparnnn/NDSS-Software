@@ -1,20 +1,13 @@
-import 'dart:developer';
-import 'dart:ffi';
 import 'dart:io';
-import 'dart:ui';
 import 'dart:typed_data';
 import 'dart:async';
 import 'package:csv/csv.dart';
-import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image/image.dart' as imageLib;
 import 'package:path_provider/path_provider.dart';
-import 'package:open_file/open_file.dart';
 import 'package:scidart/numdart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_xlsio/xlsio.dart' as exLib;
 
 import '../../load_data_csv.dart';
 import '../../myApp.dart';
@@ -82,21 +75,22 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   calCon() {
-    List<double> con = [];
-    for (double i in widget.report.con[widget.report.evaluate]!) {
-      for (int j = 0; j < 5; j++) {
-        con.add(i);
-      }
-    }
+    List<double> con = widget.report.con[widget.report.evaluate]!;
+
+    // for (double i in widget.report.con[widget.report.evaluate]!) {
+    //   for (int j = 0; j < 5; j++) {
+    //     con.add(i);
+    //   }
+    // }
     return con;
   }
 
   conStandard() async {
     // print(con);
-
     List<double> standard = widget.report.calStandard();
-    logger.d({'standard : ${standard},con : ${calCon().length}'});
-    equation = calRsquare(standard, calCon());
+    List<double> con = widget.report.con[widget.report.evaluate]!;
+    logger.d({'standard : ${standard},con : ${con.length}'});
+    equation = calRsquare(standard, con);
     logger.d(equation);
   }
 
@@ -118,21 +112,6 @@ class _ReportPageState extends State<ReportPage> {
     print('#cropPerImage: $length');
     file = selectImage(file);
   }
-
-  // Future<void> extractColors() async {
-  //   imageBytes = await _readFileByte(widget.imageFile);
-  //   // print(imageBytes);
-  //   colors = await compute(extractPixelsColors, imageBytes);
-  //   colors!.forEach((key, value) {
-  //     red.addAll(getColorValue(colors![key]!, 'red'));
-  //     green.addAll(getColorValue(colors![key]!, 'green'));
-  //     blue.addAll(getColorValue(colors![key]!, 'blue'));
-  //   });
-  //   // print(red.length);
-  //   widget.report.red = red;
-  //   widget.report.green = green;
-  //   widget.report.blue = blue;
-  // }
 
   Future<void> extractColors() async {
     // Read image bytes from the file asynchronously.
@@ -216,31 +195,39 @@ class _ReportPageState extends State<ReportPage> {
               //Initialize chart
               child: SfCartesianChart(
                 tooltipBehavior: TooltipBehavior(
-                    enable: true,
-                    tooltipPosition: TooltipPosition.pointer,
-                    borderColor: Colors.red,
-                    borderWidth: 5,
-                    color: Colors.lightBlue),
+                  enable: true,
+                  // tooltipPosition: TooltipPosition.pointer,
+                  // borderColor: Colors.red,
+                  // borderWidth: 5,
+                  // color: Colors.lightBlue
+                ),
                 title: ChartTitle(
                   text: 'Standard Linear Regression',
                   textStyle: TextStyle(fontSize: 12),
                 ),
-                primaryXAxis:
-                    NumericAxis(minimum: 0, interval: 0.1, maximum: 0.7),
+                primaryXAxis: NumericAxis(
+                    minimum: 0,
+                    interval: 0.1,
+                    maximum: 0.7,
+                    title: AxisTitle(text: 'concentration of NO2(ug)')),
                 legend: Legend(
                     isVisible: true,
                     position: LegendPosition.bottom,
                     overflowMode: LegendItemOverflowMode.wrap),
                 primaryYAxis: NumericAxis(
-                    minimum: minimum, maximum: maximum, interval: 10),
+                  minimum: 0,
+                  maximum: 255,
+                ),
                 series: <CartesianSeries>[
                   ScatterSeries<ChartData, double>(
+                      name: 'Standard',
                       legendItemText: PreferenceKey.standard,
                       enableTooltip: true,
                       dataSource: calScatter(PreferenceKey.standard),
                       xValueMapper: (ChartData data, _) => data.x,
                       yValueMapper: (ChartData data, _) => data.y),
                   LineSeries<ChartData, double>(
+                      color: Colors.lightBlue,
                       legendItemText: 'y = ' +
                           equation.coefficient(1).toStringAsFixed(3) +
                           'x' +
@@ -249,11 +236,14 @@ class _ReportPageState extends State<ReportPage> {
                           ' (R^2 =' +
                           equation.R2().toStringAsFixed(3) +
                           ')',
-                      enableTooltip: true,
+                      enableTooltip: false,
+                      dashArray: <double>[0.1, 5],
                       dataSource: calLine(),
                       xValueMapper: (ChartData data, _) => data.x,
-                      yValueMapper: (ChartData data, _) => data.y),
+                      yValueMapper: (ChartData data, _) =>
+                          data.y),
                   ScatterSeries<ChartData, double>(
+                      name: 'Sample',
                       legendItemText: PreferenceKey.sample,
                       enableTooltip: true,
                       dataSource: calScatter(PreferenceKey.sample),
@@ -390,8 +380,8 @@ class _ReportPageState extends State<ReportPage> {
               String ug3;
               if (Plate.pnpStandard.contains(index + 1)) {
                 title = 'Std';
-                concentrate = con[i * 5].toStringAsFixed(2);
-                rgbCode = widget.report.standard[i * 5].toStringAsFixed(0);
+                concentrate = con[i].toStringAsFixed(2);
+                rgbCode = widget.report.standard[i].toStringAsFixed(0);
                 i++;
               } else {
                 var number = index % 6;
@@ -504,6 +494,14 @@ class _ReportPageState extends State<ReportPage> {
     return Scaffold(
         key: UniqueKey(),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Icon(
+              Icons.arrow_back_rounded,
+              color: ColorCode.iconsAppBar,
+            ),
+          ),
           actions: [
             IconButton(
               color: ColorCode.iconsAppBar,

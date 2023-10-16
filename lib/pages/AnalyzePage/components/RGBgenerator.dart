@@ -51,32 +51,24 @@ Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
     for (int j = 1; j < GridConfig.noOfPixelsPerAxisY + 1; j++) {
       for (int i = 1; i < GridConfig.noOfPixelsPerAxisX + 1; i++) {
         if (Plate.pnpStandard.contains(no)) {
-          var pixel1 = image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
-          print('example: ${pixel1}');
-          var pixel2 = image.getPixel(left * i - midX, down * j - midY).toList();
-          var pixel3 = image.getPixel(right * i - midX, down * j - midY).toList();
-          var pixel4 = image.getPixel(left * i - midX, top * j - midY).toList();
-          var pixel5 = image.getPixel(right * i - midX, top * j - midY).toList();
-          // var pixel1 = abgrToColor(
-          //     (image?.getPixelSafe(xChunk * i - midX, yChunk * j - midY)));
-          // var pixel2 = abgrToColor(
-          //     (image?.getPixelSafe(left * i - midX, down * j - midY))! as int);
-          // var pixel3 = abgrToColor(
-          //     (image?.getPixelSafe(right * i - midX, down * j - midY))! as int);
-          // var pixel4 = abgrToColor(
-          //     (image?.getPixelSafe(left * i - midX, top * j - midY))! as int);
-          // var pixel5 = abgrToColor(
-          //     (image?.getPixelSafe(right * i - midX, top * j - midY))! as int);
+          // var pixel1 = image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
+          // print('example: ${pixel1}');
+          // var pixel2 = image.getPixel(left * i - midX, down * j - midY).toList();
+          // var pixel3 = image.getPixel(right * i - midX, down * j - midY).toList();
+          // var pixel4 = image.getPixel(left * i - midX, top * j - midY).toList();
+          var pixel5 =
+              image!.getPixel(right * i - midX, top * j - midY).toList();
 
-          colorOfStandard.add(pixel1);
-          colorOfStandard.add(pixel2);
-          colorOfStandard.add(pixel3);
-          colorOfStandard.add(pixel4);
+          // colorOfStandard.add(pixel1);
+          // colorOfStandard.add(pixel2);
+          // colorOfStandard.add(pixel3);
+          // colorOfStandard.add(pixel4);
           colorOfStandard.add(pixel5);
         }
         // int? pixel;
         else if (Plate.pnpSample!.contains(no)) {
-          var pixel = image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
+          var pixel =
+              image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
           pixels.add(pixel);
           // Color c = abgrToColor(pixel!);
           colorOfSample.add(pixel);
@@ -84,7 +76,7 @@ Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
         no++;
       }
     }
-    print('${colorOfStandard.length}');
+    // print('${colorOfStandard.length}');
     colorCode[PreferenceKey.standard] = colorOfStandard;
     colorCode[PreferenceKey.sample] = colorOfSample;
 

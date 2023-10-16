@@ -1,20 +1,16 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:image_pixels/image_pixels.dart';
-import 'package:ndss_mobile/pages/AnalyzePage/components/ConvertUgToUgM3.dart';
 import 'package:scidart/numdart.dart';
-import 'package:image/image.dart' as imageLib;
 import '../../models/ReportInfo.dart';
 import '../../myApp.dart';
 import '../../utils/ColorConfig.dart';
 import '../../utils/Constants.dart';
 import '../../utils/TextConfig.dart';
-import 'ReportPage.dart';
 import 'components/Graphgenerator.dart';
 import 'components/PDFprintgenerate.dart';
 import 'components/RGBgenerator.dart';
