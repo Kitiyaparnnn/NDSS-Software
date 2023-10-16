@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:ndss_mobile/utils/ColorConfig.dart';
 import 'package:ndss_mobile/utils/TextConfig.dart';
 
 class LoadCsvDataScreen extends StatelessWidget {
@@ -15,6 +16,14 @@ class LoadCsvDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Icon(
+            Icons.arrow_back_rounded,
+            color: ColorCode.iconsAppBar,
+          ),
+        ),
         title: Text("$title .csv", style: StyleText.appBar),
       ),
       body: FutureBuilder(
