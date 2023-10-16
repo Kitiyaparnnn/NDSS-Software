@@ -9,6 +9,7 @@ import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image/image.dart' as imageLib;
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:scidart/numdart.dart';
@@ -42,7 +43,7 @@ class ReportPage extends StatefulWidget {
 class _ReportPageState extends State<ReportPage> {
   final GlobalKey<State<StatefulWidget>> _printKey = GlobalKey();
   bool waiting = true;
-  Map<String, List<Color>>? colors;
+  Map<String, List<List<num>>>? colors;
   List<int> red = [];
   List<int> green = [];
   List<int> blue = [];
@@ -94,7 +95,7 @@ class _ReportPageState extends State<ReportPage> {
     // print(con);
 
     List<double> standard = widget.report.calStandard();
-    // logger.d({'standard : ${standard.length},con : ${calCon().length}'});
+    logger.d({'standard : ${standard},con : ${calCon().length}'});
     equation = calRsquare(standard, calCon());
     logger.d(equation);
   }
@@ -118,16 +119,54 @@ class _ReportPageState extends State<ReportPage> {
     file = selectImage(file);
   }
 
+  // Future<void> extractColors() async {
+  //   imageBytes = await _readFileByte(widget.imageFile);
+  //   // print(imageBytes);
+  //   colors = await compute(extractPixelsColors, imageBytes);
+  //   colors!.forEach((key, value) {
+  //     red.addAll(getColorValue(colors![key]!, 'red'));
+  //     green.addAll(getColorValue(colors![key]!, 'green'));
+  //     blue.addAll(getColorValue(colors![key]!, 'blue'));
+  //   });
+  //   // print(red.length);
+  //   widget.report.red = red;
+  //   widget.report.green = green;
+  //   widget.report.blue = blue;
+  // }
+
   Future<void> extractColors() async {
-    imageBytes = await _readFileByte(widget.imageFile);
-    // print(imageBytes);
-    colors = await compute(extractPixelsColors, imageBytes);
-    colors!.forEach((key, value) {
-      red.addAll(getColorValue(colors![key]!, 'red'));
-      green.addAll(getColorValue(colors![key]!, 'green'));
-      blue.addAll(getColorValue(colors![key]!, 'blue'));
-    });
-    // print(red.length);
+    // Read image bytes from the file asynchronously.
+    try {
+      imageBytes = await _readFileByte(widget.imageFile);
+    } catch (e) {
+      // Handle the error, e.g., log it or show an error message.
+      print("Error reading image file: $e");
+      return;
+    }
+
+    // Perform color extraction in a separate isolate using `compute`.
+    try {
+      colors = await compute(extractPixelsColors, imageBytes);
+    } catch (e) {
+      // Handle the error, e.g., log it or show an error message.
+      print("Error extracting colors: $e");
+      return;
+    }
+
+    // Initialize lists to store color channel values.
+    List<int> red = [];
+    List<int> green = [];
+    List<int> blue = [];
+
+    // Iterate through the colors and extract red, green, and blue values.
+    if (colors != null) {
+      colors!.forEach((key, value) {
+        red.addAll(getColorValue(colors![key]!, 'red'));
+        green.addAll(getColorValue(colors![key]!, 'green'));
+        blue.addAll(getColorValue(colors![key]!, 'blue'));
+      });
+    }
+// Update the widget's report with the extracted color values.
     widget.report.red = red;
     widget.report.green = green;
     widget.report.blue = blue;
@@ -418,7 +457,6 @@ class _ReportPageState extends State<ReportPage> {
     List<double> ug_std = ugToug3(con, widget.report);
     int j = 0;
     while (j < widget.report.standard.length) {
-
       List label = ['A', 'B', 'C'];
       int x = j ~/ 5;
       for (int i = 0; i < 5; i++) {
@@ -436,7 +474,13 @@ class _ReportPageState extends State<ReportPage> {
     print("row of smp: ${smp.length}");
 
     List<List<String>> data = [
-          ["well_index", "STD/SMP", "  G  ", "  nitrogen\n  dioxide\n  (ug)", "nitrogen \ndioxide \n(ug/m3)"]
+          [
+            "well_index",
+            "STD/SMP",
+            "  G  ",
+            "  nitrogen\n  dioxide\n  (ug)",
+            "nitrogen \ndioxide \n(ug/m3)"
+          ]
         ] +
         std.toList() +
         smp.toList();

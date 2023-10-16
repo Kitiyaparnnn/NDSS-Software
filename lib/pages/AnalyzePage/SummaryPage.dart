@@ -8,7 +8,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:image_pixels/image_pixels.dart';
 import 'package:ndss_mobile/pages/AnalyzePage/components/ConvertUgToUgM3.dart';
 import 'package:scidart/numdart.dart';
-
+import 'package:image/image.dart' as imageLib;
 import '../../models/ReportInfo.dart';
 import '../../myApp.dart';
 import '../../utils/ColorConfig.dart';
@@ -33,7 +33,7 @@ class _SummaryPageState extends State<SummaryPage> {
   bool waiting = true;
   late final FileImage flutter;
   Uint8List? imageBytes;
-  Map<String, List<Color>>? colors;
+  Map<String, List<List<num>>>? colors;
   List<int> red = [];
   List<int> green = [];
   List<int> blue = [];

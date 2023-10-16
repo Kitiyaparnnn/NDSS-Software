@@ -1,15 +1,15 @@
-import 'dart:convert';
-import 'dart:math';
+// import 'dart:convert';
+// import 'dart:math';
 import 'package:image/image.dart' as imageLib;
 
 
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
-import 'package:flutter/services.dart' show rootBundle;
+// import 'package:flutter/material.dart';
+// import 'dart:ui' as ui;
+// import 'package:flutter/services.dart' show rootBundle;
 import 'dart:async';
-import 'dart:typed_data';
+// import 'dart:typed_data';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -27,7 +27,7 @@ Future cropSquare(File imageFile, bool flip) async {
   for(int i = 0;i<GridConfig.noOfPixelsPerAxisY;i++){
     for(int j = 0;j<GridConfig.noOfPixelsPerAxisX ;j++){
       imageLib.Image destImage =
-      imageLib.copyCrop(src, j*cropSizeX, i*cropSizeY, cropSizeX, cropSizeY);
+      imageLib.copyCrop(src,y:i*cropSizeY, width: cropSizeX, height: cropSizeY, x:  j*cropSizeX,);
 
       if (flip) {
         destImage = imageLib.flipVertical(destImage);
@@ -36,7 +36,7 @@ Future cropSquare(File imageFile, bool flip) async {
       var jpg = imageLib.encodeJpg(destImage);
 
       Directory imagePath = await getApplicationDocumentsDirectory();
-      String path = imagePath.path;
+      // String path = imagePath.path;
 
       File file = File(join(imagePath.path,
           '${DateTime.now().toUtc().toIso8601String()}.png'));

@@ -7,7 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../myApp.dart';
+// import '../../myApp.dart';
 import '../../utils/Constants.dart';
 import '../../utils/PlateConfig.dart';
 import '../../utils/TextConfig.dart';
@@ -115,22 +115,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _cropImage(filePath) async {
-    File? croppedFile = await ImageCropper().cropImage(
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: filePath,
         maxHeight: 1080,
         maxWidth: 1080,
         // aspectRatioPresets: [
         //   CropAspectRatioPreset.original,
         // ],
-        androidUiSettings: const AndroidUiSettings(
-          cropGridRowCount: 2,
-          cropGridColumnCount: 5,
-        ));
+        uiSettings: [
+          AndroidUiSettings(
+            cropGridRowCount: 2,
+            cropGridColumnCount: 5,
+          )
+        ]);
 
     if (croppedFile != null) {
       _saveImage();
       setState(() {
-        imageFile = croppedFile;
+        imageFile = File(croppedFile.path);
       });
     }
   }

@@ -1,7 +1,4 @@
 import 'dart:core';
-
-import 'package:flutter/foundation.dart';
-
 import '../myApp.dart';
 import '../utils/Constants.dart';
 import '../utils/PlateConfig.dart';
