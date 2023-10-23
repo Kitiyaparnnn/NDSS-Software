@@ -43,6 +43,7 @@ List<double> calConcentrate(PolyFit equation, List<double> sample) {
 List<ChartData> getData(List<double> result, List<double> rgbCode) {
   // Future.delayed(Duration(seconds: 10));
   List<ChartData> data = [];
+  logger.d({'samples : ${rgbCode.length}},con : ${result.length}'});
   try {
     for (int i = 0; i < result.length; i++) {
       data.add(ChartData(result[i], rgbCode[i]));

@@ -68,30 +68,31 @@ class _ReportPageState extends State<ReportPage> {
     await extractColors();
     await conStandard();
     await cropImage();
-    minimum = widget.report.calStandard().reduce(min);
-    maximum = widget.report.calStandard().reduce(max);
+    minimum = 0.0;
+    maximum = 255.0;
     waiting = false;
     smp.clear();
+    con = [];
     setState(() {});
   }
 
   calCon() {
-    List<double> con = widget.report.con[widget.report.evaluate]!;
-
-    // for (double i in widget.report.con[widget.report.evaluate]!) {
-    //   for (int j = 0; j < 5; j++) {
-    //     con.add(i);
-    //   }
-    // }
+    List<double> con = [];
+    for (double i in widget.report.con[widget.report.evaluate]!) {
+      for (int j = 0; j < 5; j++) {
+        con.add(i);
+      }
+    }
     return con;
   }
 
   conStandard() async {
     // print(con);
     List<double> standard = widget.report.calStandard();
-    List<double> con = widget.report.con[widget.report.evaluate]!;
-    logger.d({'standard : ${standard},con : ${con.length}'});
-    equation = calRsquare(standard, con);
+    // List<double> con = widget.report.con[widget.report.evaluate]!;
+
+    // logger.d({'standard : ${standard},con : ${con.length}'});
+    equation = await calRsquare(standard, con);
     logger.d(equation);
   }
 
@@ -183,7 +184,7 @@ class _ReportPageState extends State<ReportPage> {
     List<double> sample = [for (double i = minimum; i <= maximum; i++) i];
     result = calConcentrate(equation, sample);
 
-    print('#calLine complete');
+    print('#calLine complete with min: ${minimum}');
     return getData(result, sample);
   }
 
@@ -353,6 +354,7 @@ class _ReportPageState extends State<ReportPage> {
   List<double> ug_sample = [];
 
   Widget _showResult() {
+    smp.clear();
     con = calCon();
 
     int i = 0;
@@ -380,17 +382,26 @@ class _ReportPageState extends State<ReportPage> {
               String ug3;
               if (Plate.pnpStandard.contains(index + 1)) {
                 title = 'Std';
-                concentrate = con[i].toStringAsFixed(2);
-                rgbCode = widget.report.standard[i].toStringAsFixed(0);
+                concentrate = con[i * 5].toStringAsFixed(2);
+                rgbCode = widget.report.standard[i * 5].toStringAsFixed(0);
                 i++;
               } else {
                 var number = index % 6;
                 if (number == 0) n++;
                 title = plate.label[n] + plate.no[number].toString();
-                concentrate = (ug_sample[j]).toStringAsFixed(2);
-                ug3 = (result[j]).toStringAsFixed(2);
-                rgbCode = widget.report.sample[j].toStringAsFixed(0);
-                smp.add(["$title", "SMP", "$rgbCode", "$concentrate", "$ug3"]);
+
+                for (int c = 0; c < 5; c++) {
+                  concentrate = (ug_sample[j * 5 + c]).toStringAsFixed(2);
+                  ug3 = (result[j * 5 + c]).toStringAsFixed(2);
+                  rgbCode = widget.report.sample[j * 5 + c].toStringAsFixed(0);
+                  smp.add(
+                      ["$title", "SMP", "$rgbCode", "$concentrate", "$ug3"]);
+                }
+
+                concentrate = (ug_sample[j * 5]).toStringAsFixed(2);
+                ug3 = (result[j * 5]).toStringAsFixed(2);
+                rgbCode = widget.report.sample[j * 5].toStringAsFixed(0);
+
                 j++;
               }
               return Container(
@@ -445,19 +456,21 @@ class _ReportPageState extends State<ReportPage> {
   Future generateCsv() async {
     List<List<String>> std = [];
     List<double> ug_std = ugToug3(con, widget.report);
-
-    List label = ['A', 'B', 'C'];
-    // int x = j ~/ 5;
-    for (int i = 0; i < 5; i++) {
-      std.add([
-        "${i < 4 ? (i < 2 ? label[0] : label[1]) : label[2]}${Plate.pnpStandard[i]}",
-        "STD",
-        "${widget.report.standard[i].toStringAsFixed(0)}",
-        "${con[i].toStringAsFixed(2)}",
-        "${ug_std[i].toStringAsFixed(2)}"
-      ]);
+    int j = 0;
+    while (j < widget.report.standard.length) {
+      List label = ['A', 'B', 'C'];
+      int x = j ~/ 5;
+      for (int i = 0; i < 5; i++) {
+        std.add([
+          "${x < 4 ? (x < 2 ? label[0] : label[1]) : label[2]}${Plate.pnpStandard[x]}",
+          "STD",
+          "${widget.report.standard[i * 5].toStringAsFixed(0)}",
+          "${con[x * 5].toStringAsFixed(2)}",
+          "${ug_std[x * 5].toStringAsFixed(2)}"
+        ]);
+        j++;
+      }
     }
-
     print("row of std: ${std.length}");
     print("row of smp: ${smp.length}");
 
@@ -514,21 +527,24 @@ class _ReportPageState extends State<ReportPage> {
           title: Text(PreferenceKey.report, style: StyleText.appBar),
         ),
         body: SingleChildScrollView(
-          child: RepaintBoundary(
-            key: _printKey,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  reportHeader(report.name, report.evaluate),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: RepaintBoundary(
+              key: _printKey,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    reportHeader(report.name, report.evaluate),
 
-                  _showChart(),
-                  // SizedBox(height: 10),
-                  // _showImage(),
-                  _showExportButton(),
-                  Container(child: _showResult()),
-                ],
+                    _showChart(),
+                    // SizedBox(height: 10),
+                    // _showImage(),
+                    _showExportButton(),
+                    Container(child: _showResult()),
+                  ],
+                ),
               ),
             ),
           ),

@@ -28,7 +28,7 @@ Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
 
     List<List<num>> colorOfStandard = [];
     List<List<num>> colorOfSample = [];
-    List<List<num>> pixels = [];
+    // List<List<num>> pixels = [];
 
     int? width = image?.width;
     int? height = image?.height;
@@ -50,28 +50,46 @@ Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
     // // yChunk = yChunk + 1;
     for (int j = 1; j < GridConfig.noOfPixelsPerAxisY + 1; j++) {
       for (int i = 1; i < GridConfig.noOfPixelsPerAxisX + 1; i++) {
+        var pixel1 =
+            image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
+        // print('example: ${pixel1}');
+        var pixel2 = image.getPixel(left * i - midX, down * j - midY).toList();
+        var pixel3 = image.getPixel(right * i - midX, down * j - midY).toList();
+        var pixel4 = image.getPixel(left * i - midX, top * j - midY).toList();
+        var pixel5 = image.getPixel(right * i - midX, top * j - midY).toList();
         if (Plate.pnpStandard.contains(no)) {
           // var pixel1 = image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
-          // print('example: ${pixel1}');
+          // // print('example: ${pixel1}');
           // var pixel2 = image.getPixel(left * i - midX, down * j - midY).toList();
           // var pixel3 = image.getPixel(right * i - midX, down * j - midY).toList();
           // var pixel4 = image.getPixel(left * i - midX, top * j - midY).toList();
-          var pixel5 =
-              image!.getPixel(right * i - midX, top * j - midY).toList();
+          // var pixel5 =
+          //     image.getPixel(right * i - midX, top * j - midY).toList();
 
-          // colorOfStandard.add(pixel1);
-          // colorOfStandard.add(pixel2);
-          // colorOfStandard.add(pixel3);
-          // colorOfStandard.add(pixel4);
+          colorOfStandard.add(pixel1);
+          colorOfStandard.add(pixel2);
+          colorOfStandard.add(pixel3);
+          colorOfStandard.add(pixel4);
           colorOfStandard.add(pixel5);
         }
         // int? pixel;
         else if (Plate.pnpSample!.contains(no)) {
-          var pixel =
-              image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
-          pixels.add(pixel);
-          // Color c = abgrToColor(pixel!);
-          colorOfSample.add(pixel);
+          // var pixel =
+          //     image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
+          // pixels.add(pixel);
+          //  var pixel1 = image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
+          // // print('example: ${pixel1}');
+          // var pixel2 = image.getPixel(left * i - midX, down * j - midY).toList();
+          // var pixel3 = image.getPixel(right * i - midX, down * j - midY).toList();
+          // var pixel4 = image.getPixel(left * i - midX, top * j - midY).toList();
+          // var pixel5 =
+          //     image.getPixel(right * i - midX, top * j - midY).toList();
+          // // Color c = abgrToColor(pixel!);
+          colorOfSample.add(pixel1);
+          colorOfSample.add(pixel2);
+          colorOfSample.add(pixel3);
+          colorOfSample.add(pixel4);
+          colorOfSample.add(pixel5);
         }
         no++;
       }

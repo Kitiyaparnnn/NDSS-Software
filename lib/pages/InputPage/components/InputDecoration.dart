@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ndss_mobile/utils/TextConfig.dart';
 
 class InputDecorations {
   static InputDecoration inputDec({required String hintText}) =>
       InputDecoration(
         fillColor: Color.fromARGB(255, 0, 0, 0),
         hintText: hintText,
+        hintStyle: TextStyle(color: Colors.black38),
         // focusColor: Colors.purple,
         alignLabelWithHint: true,
         border: const OutlineInputBorder(

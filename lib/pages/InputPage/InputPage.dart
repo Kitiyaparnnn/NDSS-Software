@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Icon(
                           Icons.camera_alt,
                           color: Colors.grey,
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Icon(
                           Icons.image,
                           color: Colors.grey,
@@ -169,6 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Container(
+      height: 180 / 3,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
       ),
@@ -282,95 +283,99 @@ class _MyHomePageState extends State<MyHomePage> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
         child: SingleChildScrollView(
-          child: Column(
-            // mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _inputReportName(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    PreferenceKey.imageTitle,
-                                    style: StyleText.headerText,
-                                  ),
-                                  Spacer(),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      textStyle: StyleText.normalText,
-                                    ),
-                                    onPressed: _showImageDialog,
-                                    child: Text(
-                                      imageFile == null ? "Upload" : "Change",
-                                      style: StyleText.buttonText,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Container(
-                                constraints: BoxConstraints(
-                                  maxWidth: MediaQuery.of(context).size.width,
-                                  maxHeight: 190,
-                                ),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                ),
-                                child: Stack(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              // mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _inputReportName(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    imageFile != null
-                                        ? Image.file(imageFile!,
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            semanticLabel: "18-well plates",
-                                            fit: BoxFit.fill)
-                                        : Center(
-                                            child: Text(
-                                              "",
-                                              style: StyleText.normalText,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            widthFactor: double.infinity,
-                                            heightFactor: double.infinity,
-                                          ),
-                                    GridView.count(
-                                      shrinkWrap: true,
-                                      // physics: NeverScrollableScrollPhysics(),
-                                      crossAxisCount: 6,
-                                      children: List.generate(
-                                          18,
-                                          (index) => _checkBox(
-                                              reportEvaluate.text, index + 1)),
+                                    Text(
+                                      PreferenceKey.imageTitle,
+                                      style: StyleText.headerText,
                                     ),
+                                    Spacer(),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        textStyle: StyleText.normalText,
+                                      ),
+                                      onPressed: _showImageDialog,
+                                      child: Text(
+                                        imageFile == null ? "Upload" : "Change",
+                                        style: StyleText.buttonText,
+                                      ),
+                                    )
                                   ],
                                 ),
-                              ),
-                            ]),
-                        // SizedBox(
-                        //   height: 10,
-                        // ),
-                        // _analyzTap(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _analyzAll()
-                      ]),
+                                Container(
+                                  constraints: BoxConstraints(
+                                    maxWidth: MediaQuery.of(context).size.width,
+                                    maxHeight: 180,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      imageFile != null
+                                          ? Image.file(imageFile!,
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              semanticLabel: "18-well plates",
+                                              fit: BoxFit.fill)
+                                          : Center(
+                                              child: Text(
+                                                "",
+                                                style: StyleText.normalText,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              widthFactor: double.infinity,
+                                              heightFactor: double.infinity,
+                                            ),
+                                      GridView.count(
+                                        shrinkWrap: true,
+                                        // physics: NeverScrollableScrollPhysics(),
+                                        crossAxisCount: 6,
+                                        children: List.generate(
+                                            18,
+                                            (index) => _checkBox(
+                                                reportEvaluate.text,
+                                                index + 1)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ]),
+                          // SizedBox(
+                          //   height: 10,
+                          // ),
+                          // _analyzTap(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _analyzAll()
+                        ]),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
