@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
 import 'package:image/image.dart' as imageLib;
 
 import '../../../myApp.dart';
@@ -8,13 +6,6 @@ import '../../../utils/Constants.dart';
 import '../../../utils/PlateConfig.dart';
 
 Plate plate = Plate();
-
-// Color abgrToColor(int argbColor) {
-//   int r = (argbColor >> 16) & 0xFF;
-//   int b = argbColor & 0xFF;
-//   int hex = (argbColor & 0xFF00FF00) | (b << 16) | r;
-//   return Color(hex);
-// }
 
 Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
   Map<String, List<List<num>>> colorCode = {};
@@ -28,7 +19,7 @@ Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
 
     List<List<num>> colorOfStandard = [];
     List<List<num>> colorOfSample = [];
-    // List<List<num>> pixels = [];
+
 
     int? width = image?.width;
     int? height = image?.height;
@@ -46,25 +37,17 @@ Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
     int no = 1;
     midX = midX + 5;
     midY = midY + 5;
-    // // xChunk = xChunk + 1;
-    // // yChunk = yChunk + 1;
+
     for (int j = 1; j < GridConfig.noOfPixelsPerAxisY + 1; j++) {
       for (int i = 1; i < GridConfig.noOfPixelsPerAxisX + 1; i++) {
         var pixel1 =
             image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
-        // print('example: ${pixel1}');
+
         var pixel2 = image.getPixel(left * i - midX, down * j - midY).toList();
         var pixel3 = image.getPixel(right * i - midX, down * j - midY).toList();
         var pixel4 = image.getPixel(left * i - midX, top * j - midY).toList();
         var pixel5 = image.getPixel(right * i - midX, top * j - midY).toList();
         if (Plate.pnpStandard.contains(no)) {
-          // var pixel1 = image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
-          // // print('example: ${pixel1}');
-          // var pixel2 = image.getPixel(left * i - midX, down * j - midY).toList();
-          // var pixel3 = image.getPixel(right * i - midX, down * j - midY).toList();
-          // var pixel4 = image.getPixel(left * i - midX, top * j - midY).toList();
-          // var pixel5 =
-          //     image.getPixel(right * i - midX, top * j - midY).toList();
 
           colorOfStandard.add(pixel1);
           colorOfStandard.add(pixel2);
@@ -74,17 +57,6 @@ Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
         }
         // int? pixel;
         else if (Plate.pnpSample!.contains(no)) {
-          // var pixel =
-          //     image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
-          // pixels.add(pixel);
-          //  var pixel1 = image!.getPixel(xChunk * i - midX, yChunk * j - midY).toList();
-          // // print('example: ${pixel1}');
-          // var pixel2 = image.getPixel(left * i - midX, down * j - midY).toList();
-          // var pixel3 = image.getPixel(right * i - midX, down * j - midY).toList();
-          // var pixel4 = image.getPixel(left * i - midX, top * j - midY).toList();
-          // var pixel5 =
-          //     image.getPixel(right * i - midX, top * j - midY).toList();
-          // // Color c = abgrToColor(pixel!);
           colorOfSample.add(pixel1);
           colorOfSample.add(pixel2);
           colorOfSample.add(pixel3);
@@ -94,11 +66,11 @@ Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
         no++;
       }
     }
-    // print('${colorOfStandard.length}');
+
     colorCode[PreferenceKey.standard] = colorOfStandard;
     colorCode[PreferenceKey.sample] = colorOfSample;
 
-    // logger.d(colorOfStandard);
+
   } catch (e) {
     logger.e('Fail: can not get RGB code from image');
   }

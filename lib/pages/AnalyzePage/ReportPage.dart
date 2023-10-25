@@ -179,12 +179,11 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   List<ChartData> calLine() {
-    // var zero = -equation.coefficient(0) / equation.coefficient(1);
-    // print(zero);
+
     List<double> sample = [for (double i = minimum; i <= maximum; i++) i];
     result = calConcentrate(equation, sample);
 
-    print('#calLine complete with min: ${minimum}');
+    // print('#calLine complete with min: ${minimum}');
     return getData(result, sample);
   }
 
@@ -198,10 +197,6 @@ class _ReportPageState extends State<ReportPage> {
               child: SfCartesianChart(
                 tooltipBehavior: TooltipBehavior(
                   enable: true,
-                  // tooltipPosition: TooltipPosition.pointer,
-                  // borderColor: Colors.red,
-                  // borderWidth: 5,
-                  // color: Colors.lightBlue
                 ),
                 title: ChartTitle(
                   text: 'Standard Linear Regression',

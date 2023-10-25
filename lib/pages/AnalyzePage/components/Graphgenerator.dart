@@ -1,9 +1,4 @@
-import 'dart:ffi';
-
 import 'package:scidart/numdart.dart';
-import 'package:scidart/scidart.dart';
-import 'package:flutter/material.dart';
-
 import '../../../myApp.dart';
 
 class ChartData {

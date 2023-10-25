@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ndss_mobile/utils/TextConfig.dart';
+
 
 class InputDecorations {
   static InputDecoration inputDec({required String hintText}) =>
