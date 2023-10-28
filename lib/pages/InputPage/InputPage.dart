@@ -169,9 +169,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Container(
-      // height: 180 / 3,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
+        border: Border.all(
+            color: Colors.grey, strokeAlign: BorderSide.strokeAlignOutside),
       ),
       child: isIcon,
     );
@@ -328,7 +328,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   height: 180,
                                   constraints: BoxConstraints(
                                     maxWidth: MediaQuery.of(context).size.width,
-                                    maxHeight: 180,
                                   ),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.rectangle,
@@ -338,7 +337,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       imageFile != null
                                           ? Image.file(imageFile!,
                                               width: double.infinity,
-                                              height: 180,
+                                              height: 179,
                                               semanticLabel: "18-well plates",
                                               fit: BoxFit.fill)
                                           : Center(
