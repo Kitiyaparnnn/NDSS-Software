@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +19,8 @@ class SummaryPage extends StatefulWidget {
   final File? imageFile;
   ReportInfo report;
 
-  SummaryPage({this.imageFile, required this.report});
+  SummaryPage({super.key, this.imageFile, required this.report});
+  @override
   State<SummaryPage> createState() => _SummaryPageState();
 }
 
@@ -80,8 +80,7 @@ class _SummaryPageState extends State<SummaryPage> {
       bytes = Uint8List.fromList(value);
       print('reading of bytes is completed');
     }).catchError((onError) {
-      print('Exception Error while reading audio from path:' +
-          onError.toString());
+      print('Exception Error while reading audio from path:$onError');
     });
     return bytes;
   }
@@ -146,7 +145,7 @@ class _SummaryPageState extends State<SummaryPage> {
             onPressed: () {
               printScreen(_printKey);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.print_rounded,
             ),
           )
@@ -165,7 +164,7 @@ class _SummaryPageState extends State<SummaryPage> {
                   child: waiting
                       ? Center(
                           child: Container(
-                              child: CircularProgressIndicator(
+                              child: const CircularProgressIndicator(
                           semanticsLabel: "loading...",
                         )))
                       : Padding(
@@ -192,14 +191,14 @@ class _SummaryPageState extends State<SummaryPage> {
                                         MediaQuery.of(context).size.width / w;
 
                                     color = img.pixelColorAt!(
-                                        (localPosition.dx / scaleW).toInt(),
+                                        localPosition.dx ~/ scaleW,
                                         (localPosition.dy).toInt());
 
                                     WidgetsBinding.instance
                                         .addPostFrameCallback((_) {
                                       setState(() {
-                                        if (color != this.color) {
-                                          this.color = color;
+                                        if (color != color) {
+                                          color = color;
                                         }
                                       });
                                     });
@@ -217,7 +216,7 @@ class _SummaryPageState extends State<SummaryPage> {
                                             top: localPosition.dy - 22,
                                             // height: h.toDouble(),
                                             child:
-                                                Icon(Icons.push_pin_rounded)),
+                                                const Icon(Icons.push_pin_rounded)),
                                       ]),
                                     );
                                   }),
@@ -233,15 +232,15 @@ class _SummaryPageState extends State<SummaryPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("Colors: ", style: StyleText.normalText),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Container(width: 100, height: 55, color: color),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Container(
-                      padding: EdgeInsets.only(left: 8.0),
+                      padding: const EdgeInsets.only(left: 8.0),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -254,7 +253,7 @@ class _SummaryPageState extends State<SummaryPage> {
                                 style: StyleText.normalText),
                             Text("B: ${color.blue}",
                                 style: StyleText.normalText),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Text(

@@ -22,10 +22,10 @@ PolyFit calRsquare(List<double> x, List<double> y) {
 List<double> calConcentrate(PolyFit equation, List<double> sample) {
   List<double> result = [];
   try {
-    sample.forEach((code) {
+    for (var code in sample) {
       result.add(equation.predict(code));
       // logger.d('$code : ${result.last}');
-    });
+    }
 
     var length = result.length;
     print('#concentrate: $length');

@@ -15,7 +15,7 @@ Map<String, List<List<num>>> extractPixelsColors(Uint8List? bytes) {
 
     Uint8List bytes2 = Uint8List.fromList(values);
     imageLib.Image? image = imageLib.decodeImage(bytes2);
-    print('result: ${image}');
+    print('result: $image');
 
     List<List<num>> colorOfStandard = [];
     List<List<num>> colorOfSample = [];
@@ -88,10 +88,14 @@ List<int> getColorValue(List<List<num>> c, String color) {
       }
     }
     if (color == 'green') {
-      c.forEach((c) => value.add(c[1].toInt()));
+      for (var c in c) {
+        value.add(c[1].toInt());
+      }
     }
     if (color == 'blue') {
-      c.forEach((c) => value.add(c[2].toInt()));
+      for (var c in c) {
+        value.add(c[2].toInt());
+      }
     }
   } catch (e) {
     logger.e('Fail: can not convert hexcode to rgbcode');

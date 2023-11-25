@@ -25,10 +25,10 @@ class ReportInfo {
   List<double> calStandard() {
     // print(red.length);
     // print(Plate.pnpStandard);
-    this.standard = [];
+    standard = [];
     // print(this.evaluate);
     try {
-      if (this.evaluate == PreferenceKey.nitrogenDi) {
+      if (evaluate == PreferenceKey.nitrogenDi) {
         for (int i = 1; i < 31; i++) {
           standard.add(green[i - 1].toDouble());
         }
@@ -42,9 +42,9 @@ class ReportInfo {
 
   List<double> calSample() {
     // print(Plate.php);
-    this.sample = [];
+    sample = [];
     try {
-      if (this.evaluate == PreferenceKey.nitrogenDi) {
+      if (evaluate == PreferenceKey.nitrogenDi) {
         for (int i = 31; i <= 90; i++) {
           sample.add(green[i - 1].toDouble());
         }

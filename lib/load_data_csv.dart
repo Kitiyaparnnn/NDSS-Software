@@ -10,7 +10,7 @@ class LoadCsvDataScreen extends StatelessWidget {
   final String path;
   final String title;
 
-  LoadCsvDataScreen({required this.path, required this.title});
+  const LoadCsvDataScreen({super.key, required this.path, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class LoadCsvDataScreen extends StatelessWidget {
                     ),
                   ),
                 )
-              : Center(
+              : const Center(
                   child: CircularProgressIndicator(),
                 );
         },
@@ -76,11 +76,11 @@ class LoadCsvDataScreen extends StatelessWidget {
   }
 
   Future<List<List<dynamic>>> loadingCsvData(String path) async {
-    final csvFile = new File(path).openRead();
+    final csvFile = File(path).openRead();
     return await csvFile
         .transform(utf8.decoder)
         .transform(
-          CsvToListConverter(),
+          const CsvToListConverter(),
         )
         .toList();
   }

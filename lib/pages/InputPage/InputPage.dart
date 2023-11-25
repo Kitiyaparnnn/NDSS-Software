@@ -58,10 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     _getFromCamera();
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(10.0),
                         child: Icon(
                           Icons.camera_alt,
                           color: Colors.grey,
@@ -78,10 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     _getFromGallery();
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(10.0),
                         child: Icon(
                           Icons.image,
                           color: Colors.grey,
@@ -152,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (evaluate == 'Nitrogen Dioxide') {
       //standard
       if (Plate.pnpStandard.contains(index)) {
-        isIcon = Icon(
+        isIcon = const Icon(
           Icons.check_circle_outline_outlined,
           color: Colors.green,
           size: 40,
@@ -160,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       //sample
       if (Plate.pnpSample!.contains(index)) {
-        isIcon = Icon(
+        isIcon = const Icon(
           Icons.check_circle_outline_outlined,
           color: Colors.red,
           size: 40,
@@ -227,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(PreferenceKey.nameTitle, style: StyleText.headerText),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         TextFormField(
@@ -238,11 +238,11 @@ class _MyHomePageState extends State<MyHomePage> {
           decoration: InputDecorations.inputDec(hintText: 'example'),
           style: StyleText.normalText,
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text(PreferenceKey.evaluateTitle, style: StyleText.headerText),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         TextFormField(
@@ -253,11 +253,11 @@ class _MyHomePageState extends State<MyHomePage> {
           decoration: InputDecorations.inputDec(hintText: 'example'),
           style: StyleText.normalText,
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text(PreferenceKey.timeTitle, style: StyleText.headerText),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         TextFormField(
@@ -281,7 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("M-NDSS", style: StyleText.appBar),
       ),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -294,11 +294,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           _inputReportName(),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Column(
@@ -311,7 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       PreferenceKey.imageTitle,
                                       style: StyleText.headerText,
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         textStyle: StyleText.normalText,
@@ -329,7 +329,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   constraints: BoxConstraints(
                                     maxWidth: MediaQuery.of(context).size.width,
                                   ),
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     shape: BoxShape.rectangle,
                                   ),
                                   child: Stack(
@@ -341,13 +341,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                               semanticLabel: "18-well plates",
                                               fit: BoxFit.fill)
                                           : Center(
+                                              widthFactor: double.infinity,
+                                              heightFactor: double.infinity,
                                               child: Text(
                                                 "",
                                                 style: StyleText.normalText,
                                                 textAlign: TextAlign.center,
                                               ),
-                                              widthFactor: double.infinity,
-                                              heightFactor: double.infinity,
                                             ),
                                       GridView.count(
                                         shrinkWrap: true,
@@ -367,7 +367,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           //   height: 10,
                           // ),
                           // _analyzTap(),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           _analyzAll()

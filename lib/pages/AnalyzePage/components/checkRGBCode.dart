@@ -9,19 +9,19 @@ Widget _colorCheck(File? imageFile, Uint8List? imageBytes, List<Color> colors) {
   return Container(
     child: ListView(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         SizedBox(
-          child: imageBytes != null && imageBytes.length > 0
+          child: imageBytes != null && imageBytes.isNotEmpty
               ? Image.file(
                   imageFile!,
                   fit: BoxFit.fill,
                 )
-              : Center(child: CircularProgressIndicator()),
+              : const Center(child: CircularProgressIndicator()),
           // height: 250,
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         _getGrids(colors),
@@ -39,17 +39,17 @@ Widget _getGrids(List<Color> colors) {
           flex: 1,
           child: colors.isEmpty
               ? Container(
-                  child: CircularProgressIndicator(),
                   alignment: Alignment.center,
                   height: 200,
+                  child: const CircularProgressIndicator(),
                 )
               : Column(
                   children: [
-                    Text(
+                    const Text(
                       'Extracted Pixels',
                       style: TextStyle(color: Colors.black),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     GridView.builder(
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -58,12 +58,12 @@ Widget _getGrids(List<Color> colors) {
                         itemBuilder: (BuildContext ctx, index) {
                           return Container(
                             alignment: Alignment.center,
-                            child: Container(
-                              color: colors[index],
-                            ),
                             decoration: BoxDecoration(
                                 border: Border.all(width: 1),
                                 color: Colors.grey),
+                            child: Container(
+                              color: colors[index],
+                            ),
                           );
                         }),
                   ],

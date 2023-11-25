@@ -33,7 +33,7 @@ class myApp extends StatelessWidget {
             title: "modern-ndss by Kitiyaporn T.",
             builder: BotToastInit(),
             navigatorObservers: [BotToastNavigatorObserver()],
-            home: MyHomePage(),
+            home: const MyHomePage(),
             theme: ThemeData(
                 primarySwatch: ColorCode.appBarColor,
                 textTheme: GoogleFonts.sarabunTextTheme()),
