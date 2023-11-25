@@ -17,7 +17,7 @@ class ReportInfo {
   List<double> standard = [];
   List<double> sample = [];
   Map<String, List<double>> con = {
-    PreferenceKey.nitrogenDi: [0, 0.18, 0.37, 0.46, 0.55, 0.69]
+    PreferenceKey.nitrogenDi: [0, 0.46, 0.18, 0.55, 0.37, 0.69]
   };
 
   Plate plate = Plate();
