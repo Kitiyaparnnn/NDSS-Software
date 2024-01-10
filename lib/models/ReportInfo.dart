@@ -1,4 +1,3 @@
-import 'dart:core';
 import '../myApp.dart';
 import '../utils/Constants.dart';
 import '../utils/PlateConfig.dart';

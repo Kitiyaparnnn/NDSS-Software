@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-
 import '../../../utils/Constants.dart';
 
 Widget _colorCheck(File? imageFile, Uint8List? imageBytes, List<Color> colors) {
