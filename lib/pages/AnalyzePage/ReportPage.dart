@@ -27,7 +27,7 @@ class ReportPage extends StatefulWidget {
   final File? imageFile;
   ReportInfo report;
 
-  ReportPage({this.imageFile, required this.report});
+  ReportPage({super.key, this.imageFile, required this.report});
 
   @override
   State<ReportPage> createState() => _ReportPageState();
@@ -92,7 +92,7 @@ class _ReportPageState extends State<ReportPage> {
     // List<double> con = widget.report.con[widget.report.evaluate]!;
 
     // logger.d({'standard : ${standard},con : ${con.length}'});
-    equation = await calRsquare(standard, con);
+    equation = calRsquare(standard, con);
     logger.d(equation);
   }
 
@@ -190,7 +190,7 @@ class _ReportPageState extends State<ReportPage> {
   Widget _showChart() {
     return Center(
       child: waiting
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : Container(
               height: 400,
               //Initialize chart
