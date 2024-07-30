@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:async';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
@@ -23,6 +22,7 @@ import 'components/RGBgenerator.dart';
 import '../../models/ReportInfo.dart';
 import 'components/reportHeader.dart';
 
+// ignore: must_be_immutable
 class ReportPage extends StatefulWidget {
   final File? imageFile;
   ReportInfo report;
@@ -162,8 +162,7 @@ class _ReportPageState extends State<ReportPage> {
       bytes = Uint8List.fromList(value);
       print('reading of bytes is completed');
     }).catchError((onError) {
-      print('Exception Error while reading audio from path:' +
-          onError.toString());
+      print('Exception Error while reading audio from path:$onError');
     });
     return bytes;
   }
@@ -191,7 +190,7 @@ class _ReportPageState extends State<ReportPage> {
     return Center(
       child: waiting
           ? const CircularProgressIndicator()
-          : Container(
+          : SizedBox(
               height: 400,
               //Initialize chart
               child: SfCartesianChart(
@@ -200,14 +199,14 @@ class _ReportPageState extends State<ReportPage> {
                 ),
                 title: ChartTitle(
                   text: 'Standard Linear Regression',
-                  textStyle: TextStyle(fontSize: 12),
+                  textStyle: const TextStyle(fontSize: 12),
                 ),
                 primaryXAxis: NumericAxis(
                     minimum: 0,
                     interval: 0.1,
                     maximum: 0.7,
                     title: AxisTitle(text: 'concentration of NO2(ug)')),
-                legend: Legend(
+                legend: const Legend(
                     isVisible: true,
                     position: LegendPosition.bottom,
                     overflowMode: LegendItemOverflowMode.wrap),
@@ -225,14 +224,7 @@ class _ReportPageState extends State<ReportPage> {
                       yValueMapper: (ChartData data, _) => data.y),
                   LineSeries<ChartData, double>(
                       color: Colors.lightBlue,
-                      legendItemText: 'y = ' +
-                          equation.coefficient(1).toStringAsFixed(3) +
-                          'x' +
-                          '+' +
-                          equation.coefficient(0).toStringAsFixed(3) +
-                          ' (R^2 =' +
-                          equation.R2().toStringAsFixed(3) +
-                          ')',
+                      legendItemText: 'y = ${equation.coefficient(1).toStringAsFixed(3)}x+${equation.coefficient(0).toStringAsFixed(3)} (R^2 =${equation.R2().toStringAsFixed(3)})',
                       enableTooltip: false,
                       dashArray: <double>[0.1, 5],
                       dataSource: calLine(),
@@ -253,95 +245,95 @@ class _ReportPageState extends State<ReportPage> {
 
   _showImage() {
     return result.isEmpty
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Stack(children: [
-            Container(
+            SizedBox(
               height: 300,
               child: Image.file(widget.imageFile!,
                   semanticLabel: "18-well plates", fit: BoxFit.fill),
             ),
             for (int i = 1; i < 6; i++)
               Positioned(
+                  top: 18.75 * 3,
+                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3,
                   child: Tooltip(
                     triggerMode: TooltipTriggerMode.tap,
                     preferBelow: false,
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     message:
                         con.isEmpty ? "xx.xx" : con[i - 1].toStringAsFixed(2),
-                    child: Icon(Icons.check_circle_outline_outlined,
+                    child: const Icon(Icons.check_circle_outline_outlined,
                         color: Colors.green),
-                  ),
-                  top: 18.75 * 3,
-                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3),
+                  )),
             for (int i = 1; i < 6; i++)
               Positioned(
+                  top: 18.75 * 5,
+                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3,
                   child: Tooltip(
                     triggerMode: TooltipTriggerMode.tap,
                     preferBelow: false,
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     message:
                         con.isEmpty ? "xx.xx" : con[i - 1].toStringAsFixed(2),
-                    child: Icon(Icons.check_circle_outline_outlined,
+                    child: const Icon(Icons.check_circle_outline_outlined,
                         color: Colors.green),
-                  ),
-                  top: 18.75 * 5,
-                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3),
+                  )),
             for (int i = 1; i < 11; i++)
               Positioned(
+                  top: 18.75 * 7,
+                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3,
                   child: Tooltip(
                     triggerMode: TooltipTriggerMode.tap,
                     preferBelow: false,
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     message: result.isEmpty
                         ? "xx.xx"
                         : (result[i - 1] * 2).toStringAsFixed(2),
-                    child: Icon(Icons.check_circle_outline_outlined,
+                    child: const Icon(Icons.check_circle_outline_outlined,
                         color: Colors.red),
-                  ),
-                  top: 18.75 * 7,
-                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3),
+                  )),
             for (int i = 1; i < 11; i++)
               Positioned(
+                  top: 18.75 * 9,
+                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3,
                   child: Tooltip(
                     triggerMode: TooltipTriggerMode.tap,
                     preferBelow: false,
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     message: result.isEmpty
                         ? "xx.xx"
                         : (result[i + 10 - 1] * 2).toStringAsFixed(2),
-                    child: Icon(Icons.check_circle_outline_outlined,
+                    child: const Icon(Icons.check_circle_outline_outlined,
                         color: Colors.red),
-                  ),
-                  top: 18.75 * 9,
-                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3),
+                  )),
             for (int i = 1; i < 11; i++)
               Positioned(
+                  top: 18.75 * 11,
+                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3,
                   child: Tooltip(
                     triggerMode: TooltipTriggerMode.tap,
                     preferBelow: false,
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     message: result.isEmpty
                         ? "xx.xx"
                         : (result[i + 20 - 1] * 2).toStringAsFixed(2),
-                    child: Icon(Icons.check_circle_outline_outlined,
+                    child: const Icon(Icons.check_circle_outline_outlined,
                         color: Colors.red),
-                  ),
-                  top: 18.75 * 11,
-                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3),
+                  )),
             for (int i = 1; i < 11; i++)
               Positioned(
+                  top: 18.75 * 13,
+                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3,
                   child: Tooltip(
                     triggerMode: TooltipTriggerMode.tap,
                     preferBelow: false,
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     message: result.isEmpty
                         ? "xx.xx"
                         : (result[i + 30 - 1] * 2).toStringAsFixed(2),
-                    child: Icon(Icons.check_circle_outline_outlined,
+                    child: const Icon(Icons.check_circle_outline_outlined,
                         color: Colors.red),
-                  ),
-                  top: 18.75 * 13,
-                  left: (MediaQuery.of(context).size.width * i / 6.0) + 3)
+                  ))
           ]);
   }
 
@@ -359,14 +351,14 @@ class _ReportPageState extends State<ReportPage> {
     ug_sample = result;
     result = ugToug3(result, widget.report);
     // logger.i(result);
-    return file.length == 0
-        ? SizedBox(
+    return file.isEmpty
+        ? const SizedBox(
             height: 10,
           )
         : GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 6,
             ),
             itemCount: file.length,
@@ -390,7 +382,7 @@ class _ReportPageState extends State<ReportPage> {
                   ug3 = (result[j * 5 + c]).toStringAsFixed(2);
                   rgbCode = widget.report.sample[j * 5 + c].toStringAsFixed(0);
                   smp.add(
-                      ["$title", "SMP", "$rgbCode", "$concentrate", "$ug3"]);
+                      [title, "SMP", rgbCode, concentrate, ug3]);
                 }
 
                 concentrate = (ug_sample[j * 5]).toStringAsFixed(2);
@@ -399,11 +391,11 @@ class _ReportPageState extends State<ReportPage> {
 
                 j++;
               }
-              return Container(
+              return SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   children: [
-                    Text(title + '=' + '$concentrate',
+                    Text('$title=$concentrate',
                         style: StyleText.resultText),
                     Image.file(
                       file[index],
@@ -424,7 +416,7 @@ class _ReportPageState extends State<ReportPage> {
 
   _showExportButton() {
     return waiting
-        ? SizedBox()
+        ? const SizedBox()
         : Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -438,7 +430,7 @@ class _ReportPageState extends State<ReportPage> {
                     onPressed: () {
                       generateCsv();
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.file_upload,
                       color: Colors.white,
                     ),
@@ -450,7 +442,7 @@ class _ReportPageState extends State<ReportPage> {
 
   Future generateCsv() async {
     List<List<String>> std = [];
-    List<double> ug_std = ugToug3(con, widget.report);
+    List<double> ugStd = ugToug3(con, widget.report);
     int j = 0;
     while (j < widget.report.standard.length) {
       List label = ['A', 'B', 'C'];
@@ -459,9 +451,9 @@ class _ReportPageState extends State<ReportPage> {
         std.add([
           "${x < 4 ? (x < 2 ? label[0] : label[1]) : label[2]}${Plate.pnpStandard[x]}",
           "STD",
-          "${widget.report.standard[i * 5].toStringAsFixed(0)}",
-          "${con[x * 5].toStringAsFixed(2)}",
-          "${ug_std[x * 5].toStringAsFixed(2)}"
+          (widget.report.standard[i * 5].toStringAsFixed(0)),
+          (con[x * 5].toStringAsFixed(2)),
+          (ugStd[x * 5].toStringAsFixed(2))
         ]);
         j++;
       }
@@ -480,7 +472,7 @@ class _ReportPageState extends State<ReportPage> {
         ] +
         std.toList() +
         smp.toList();
-    String csvData = ListToCsvConverter().convert(data);
+    String csvData = const ListToCsvConverter().convert(data);
     final String directory = (await getExternalStorageDirectory())!.path;
     final path = "$directory/m-css-${widget.report.name}-${DateTime.now()}.csv";
     final File file = File(path);
@@ -514,7 +506,7 @@ class _ReportPageState extends State<ReportPage> {
               onPressed: () {
                 printScreen(_printKey);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.print_rounded,
               ),
             )
@@ -526,7 +518,7 @@ class _ReportPageState extends State<ReportPage> {
             padding: const EdgeInsets.all(10.0),
             child: RepaintBoundary(
               key: _printKey,
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,

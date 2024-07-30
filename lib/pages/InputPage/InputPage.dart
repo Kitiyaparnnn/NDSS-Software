@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(10.0),
                         child: Icon(
                           Icons.image,
                           color: Colors.grey,
@@ -281,7 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("M-NDSS", style: StyleText.appBar),
       ),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -341,13 +341,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                               semanticLabel: "18-well plates",
                                               fit: BoxFit.fill)
                                           : Center(
+                                              widthFactor: double.infinity,
+                                              heightFactor: double.infinity,
                                               child: Text(
                                                 "",
                                                 style: StyleText.normalText,
                                                 textAlign: TextAlign.center,
                                               ),
-                                              widthFactor: double.infinity,
-                                              heightFactor: double.infinity,
                                             ),
                                       GridView.count(
                                         shrinkWrap: true,
