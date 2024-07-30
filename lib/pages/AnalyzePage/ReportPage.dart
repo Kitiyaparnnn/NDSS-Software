@@ -215,14 +215,16 @@ class _ReportPageState extends State<ReportPage> {
                 ),
                 series: <CartesianSeries>[
                   ScatterSeries<ChartData, double>(
-                      name: 'Standard',
-                      legendItemText: PreferenceKey.standard,
-                      enableTooltip: true,
-                      dataSource: calScatter(PreferenceKey.standard),
-                      xValueMapper: (ChartData data, _) => data.x,
-                      yValueMapper: (ChartData data, _) => data.y),
+                    name: 'Standard',
+                    legendItemText: PreferenceKey.standard,
+                    enableTooltip: true,
+                    dataSource: calScatter(PreferenceKey.standard),
+                    xValueMapper: (ChartData data, _) => data.x,
+                    yValueMapper: (ChartData data, _) => data.y,
+                  ),
                   LineSeries<ChartData, double>(
-                      name: 'Linear regression',
+                      // name: 'Linear regression',
+                      isVisibleInLegend: false,
                       color: Colors.lightBlue,
                       // legendItemText: 'y = ${equation.coefficient(1).toStringAsFixed(3)}x+${equation.coefficient(0).toStringAsFixed(3)} (R^2 =${equation.R2().toStringAsFixed(3)})',
                       enableTooltip: false,
