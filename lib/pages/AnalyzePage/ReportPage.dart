@@ -147,7 +147,7 @@ class _ReportPageState extends State<ReportPage> {
         blue.addAll(getColorValue(colors![key]!, 'blue'));
       });
     }
-// Update the widget's report with the extracted color values.
+    // Update the widget's report with the extracted color values.
     widget.report.red = red;
     widget.report.green = green;
     widget.report.blue = blue;
@@ -178,7 +178,6 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   List<ChartData> calLine() {
-
     List<double> sample = [for (double i = minimum; i <= maximum; i++) i];
     result = calConcentrate(equation, sample);
 
@@ -223,8 +222,9 @@ class _ReportPageState extends State<ReportPage> {
                       xValueMapper: (ChartData data, _) => data.x,
                       yValueMapper: (ChartData data, _) => data.y),
                   LineSeries<ChartData, double>(
+                      name: 'Linear regression',
                       color: Colors.lightBlue,
-                      legendItemText: 'y = ${equation.coefficient(1).toStringAsFixed(3)}x+${equation.coefficient(0).toStringAsFixed(3)} (R^2 =${equation.R2().toStringAsFixed(3)})',
+                      // legendItemText: 'y = ${equation.coefficient(1).toStringAsFixed(3)}x+${equation.coefficient(0).toStringAsFixed(3)} (R^2 =${equation.R2().toStringAsFixed(3)})',
                       enableTooltip: false,
                       dashArray: <double>[0.1, 5],
                       dataSource: calLine(),
@@ -381,8 +381,7 @@ class _ReportPageState extends State<ReportPage> {
                   concentrate = (ug_sample[j * 5 + c]).toStringAsFixed(2);
                   ug3 = (result[j * 5 + c]).toStringAsFixed(2);
                   rgbCode = widget.report.sample[j * 5 + c].toStringAsFixed(0);
-                  smp.add(
-                      [title, "SMP", rgbCode, concentrate, ug3]);
+                  smp.add([title, "SMP", rgbCode, concentrate, ug3]);
                 }
 
                 concentrate = (ug_sample[j * 5]).toStringAsFixed(2);
@@ -395,8 +394,7 @@ class _ReportPageState extends State<ReportPage> {
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   children: [
-                    Text('$title=$concentrate',
-                        style: StyleText.resultText),
+                    Text('$title=$concentrate', style: StyleText.resultText),
                     Image.file(
                       file[index],
                       fit: BoxFit.contain,
