@@ -215,8 +215,8 @@ class _SummaryPageState extends State<SummaryPage> {
                                             left: localPosition.dx - 10,
                                             top: localPosition.dy - 22,
                                             // height: h.toDouble(),
-                                            child:
-                                                const Icon(Icons.push_pin_rounded)),
+                                            child: const Icon(
+                                                Icons.push_pin_rounded)),
                                       ]),
                                     );
                                   }),
